@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-export const NewsletterSubscriptionsContext = createContext([]);
+const Context = createContext([]);
 
 const addId = (subscriptions, subscription) => ({
   id: subscriptions.length + 1,
@@ -18,7 +18,7 @@ const isAlreadyAdded = (subscriptions, newSubscription) =>
     return exists;
   }, false);
 
-export const NewsletterSubscriptionsContextProvider = ({ children }) => {
+const NewsletterSubscriptionsProvider = ({ children }) => {
   const [subscriptions, setSubscriptions] = useState([]);
 
   const addSubscription = (newSubscription) => {
@@ -30,15 +30,12 @@ export const NewsletterSubscriptionsContextProvider = ({ children }) => {
   };
 
   return (
-    <NewsletterSubscriptionsContext.Provider
-      value={[subscriptions, addSubscription]}
-    >
+    <Context.Provider value={[subscriptions, addSubscription]}>
       {children}
-    </NewsletterSubscriptionsContext.Provider>
+    </Context.Provider>
   );
 };
 
-const useNewsNewsletterSubscriptions = () =>
-  useContext(NewsletterSubscriptionsContext);
+export const useNewsletterSubscriptionsContext = () => useContext(Context);
 
-export default useNewsNewsletterSubscriptions;
+export default NewsletterSubscriptionsProvider;

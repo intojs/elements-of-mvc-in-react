@@ -5,10 +5,10 @@ import CheckIcon from "@material-ui/icons/Check";
 import Typography from "@material-ui/core/Typography";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import useNewsNewsletterSubscriptions from "./NewsletterSubscriptionsContext";
+import { useNewsletterSubscriptionsContext } from "./NewsletterSubscriptionsProvider";
 
 const NewsletterSubscriptions = () => {
-  const [subscriptions] = useNewsNewsletterSubscriptions();
+  const [subscriptions] = useNewsletterSubscriptionsContext();
 
   return (
     <div>

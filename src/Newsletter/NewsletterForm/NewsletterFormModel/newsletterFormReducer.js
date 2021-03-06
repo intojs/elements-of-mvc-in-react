@@ -1,5 +1,12 @@
 import actionTypes from "./NewsletterFormActionTypes";
-import isFormValid from "./isNewsletterFormModelValid";
+
+const isNewsletterFormModelValid = (model) => {
+  const {
+    fields: { fullName, newsletter },
+  } = model;
+
+  return !!(fullName.value && fullName.value.length > 2 && newsletter.value);
+};
 
 const withValidation = (state, field, value) => {
   const changedState = {
@@ -15,7 +22,7 @@ const withValidation = (state, field, value) => {
 
   return {
     ...changedState,
-    isValid: isFormValid(changedState),
+    isValid: isNewsletterFormModelValid(changedState),
   };
 };
 
@@ -23,16 +30,10 @@ const newsletterFormReducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case actionTypes.GET_NEWSLETTERS:
+    case actionTypes.SET_NEWSLETTERS_OPTIONS:
       return {
         ...state,
-        isLoading: true,
-      };
-
-    case actionTypes.GET_NEWSLETTERS_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
+        isLoading: payload.newsletterOptions.length === 0,
         fields: {
           ...state.fields,
           newsletter: {

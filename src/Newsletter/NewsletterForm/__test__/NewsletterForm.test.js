@@ -1,68 +1,64 @@
 import React from "react";
 import { screen, fireEvent, within, render } from "@testing-library/react";
-import { NewsletterSubscriptionsContext as Context } from "../../NewsletterSubscriptionsContext";
-import NewsletterApi from "../../NewsletterApi";
 import NewsletterForm from "../index";
 
 describe("NewsletterForm", () => {
-  const newsletters = [
+  const newsletterOptions = [
     {
-      code: "one",
-      name: "One",
+      label: "One",
+      value: "one",
     },
     {
-      code: "two",
-      name: "Two",
+      label: "Two",
+      value: "two",
     },
   ];
-  const [, secondNewsletter] = newsletters;
+  const [, secondOption] = newsletterOptions;
   const fullName = "Daniel Dughila";
-  const addSubscription = jest.fn();
 
   const fillInFullName = async () => {
-    const fullNameInput = await screen.findByRole("textbox", {
+    const fullNameInputEl = await screen.findByRole("textbox", {
       name: /full name/i,
     });
-    fireEvent.change(fullNameInput, { target: { value: fullName } });
+    fireEvent.change(fullNameInputEl, { target: { value: fullName } });
   };
 
   const selectNewsletter = async () => {
-    const newsletterSelectButton = await screen.findByRole("button", {
+    const newsletterSelectButtonEl = await screen.findByRole("button", {
       name: /newsletter/i,
     });
-    fireEvent.mouseDown(newsletterSelectButton);
-    const newsletterSelect = await screen.findByRole("listbox");
-    const secondOption = await within(newsletterSelect).getByText(
-      secondNewsletter.name
+    fireEvent.mouseDown(newsletterSelectButtonEl);
+    const newsletterSelectEl = await screen.findByRole("listbox");
+    const secondOptionEl = await within(newsletterSelectEl).getByText(
+      secondOption.label
     );
-    fireEvent.click(secondOption);
+    fireEvent.click(secondOptionEl);
   };
 
   const submitForm = async () => {
-    const subscribeButton = await screen.findByRole("button", {
+    const submitButtonEl = await screen.findByRole("button", {
       name: /subscribe/i,
     });
-    fireEvent.submit(subscribeButton);
+    fireEvent.submit(submitButtonEl);
   };
 
   it("should add a newsletter subscription", async () => {
-    jest.spyOn(NewsletterApi, "getNewsletters").mockReturnValue(newsletters);
+    const onSubmitSpy = jest.fn();
 
     render(
-      <Context.Provider value={[[], addSubscription]}>
-        <NewsletterForm />
-      </Context.Provider>
+      <NewsletterForm
+        newsletterOptions={newsletterOptions}
+        onSubmit={onSubmitSpy}
+      />
     );
 
     await fillInFullName();
-
     await selectNewsletter();
-
     await submitForm();
 
-    expect(addSubscription).toHaveBeenCalledWith({
+    expect(onSubmitSpy).toHaveBeenCalledWith({
       fullName,
-      newsletter: secondNewsletter,
+      newsletter: secondOption.value,
     });
   });
 });

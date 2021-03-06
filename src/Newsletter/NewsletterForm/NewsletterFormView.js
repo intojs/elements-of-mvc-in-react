@@ -64,50 +64,52 @@ const NewsletterFormView = (props) => {
         Subscribe to a newsletter
       </Typography>
 
-      {isLoading ? (
-        <CircularProgress />
-      ) : (
-        <form onSubmit={handleSubmit} noValidate autoComplete="off">
-          <TextField
-            id="full-name"
-            className={classes.formField}
-            label="Full name"
-            variant="filled"
-            fullWidth
-            required
-            onChange={(e) => handleFullNameChange(e)}
-          />
+      <form onSubmit={handleSubmit} noValidate autoComplete="off">
+        <TextField
+          id="full-name"
+          className={classes.formField}
+          label="Full name"
+          variant="filled"
+          fullWidth
+          required
+          onChange={(e) => handleFullNameChange(e)}
+        />
 
-          <FormControl
-            variant="filled"
-            className={classes.formField}
-            fullWidth
-            required
-          >
-            <InputLabel id="newsletter">Newsletter</InputLabel>
-            <Select
-              id="newsletter"
-              value={selectedNewsletter}
-              onChange={(e) => handleNewsletterChange(e)}
-            >
-              {newsletter.options.map(({ label, value }) => (
-                <MenuItem key={value} value={value}>
-                  {label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <FormControl
+          variant="filled"
+          className={classes.formField}
+          fullWidth
+          required
+        >
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <>
+              <InputLabel id="newsletter">Newsletter</InputLabel>
+              <Select
+                id="newsletter"
+                value={selectedNewsletter}
+                onChange={(e) => handleNewsletterChange(e)}
+              >
+                {newsletter.options.map(({ label, value }) => (
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </>
+          )}
+        </FormControl>
 
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            disabled={!isValid}
-          >
-            Subscribe
-          </Button>
-        </form>
-      )}
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={!isValid}
+        >
+          Subscribe
+        </Button>
+      </form>
     </div>
   );
 };

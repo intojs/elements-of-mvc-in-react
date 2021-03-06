@@ -1,11 +1,7 @@
 import actionTypes from "./NewsletterFormActionTypes";
 
-const getNewsletters = () => ({
-  type: actionTypes.GET_NEWSLETTERS,
-});
-
-const getNewslettersSuccess = (newsletterOptions) => ({
-  type: actionTypes.GET_NEWSLETTERS_SUCCESS,
+const setNewsletterOptions = (newsletterOptions) => ({
+  type: actionTypes.SET_NEWSLETTERS_OPTIONS,
   payload: { newsletterOptions },
 });
 
@@ -15,8 +11,7 @@ const changeField = (change) => ({
 });
 
 const NewsletterFormActions = {
-  getNewsletters,
-  getNewslettersSuccess,
+  setNewsletterOptions,
   changeField,
 };
 

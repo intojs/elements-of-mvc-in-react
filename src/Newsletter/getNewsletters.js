@@ -18,6 +18,4 @@ const getNewsletters = () =>
     }, 500);
   });
 
-const NewsletterApi = { getNewsletters };
-
-export default NewsletterApi;
+export default getNewsletters;
